@@ -965,7 +965,7 @@ function renderQuestion() {
   card.style.animation = 'none';
   card.offsetHeight;
   card.style.animation = '';
-  const savedAnswer = answers[q.key];
+  const savedAnswer = answers[q.key] !== undefined ? answers[q.key] : null;
   card.innerHTML = `
     ${current > 0 ? `
     <button class="back-btn" onclick="goBack()">
@@ -978,7 +978,7 @@ function renderQuestion() {
     <div class="q-text">${q.q}</div>
     <div class="options">
       ${q.options.map((opt, i) => `
-        <button class="option-btn ${savedAnswer === i ? 'selected' : ''}" onclick="selectOption(${i})">
+        <button class="option-btn ${savedAnswer !== null && savedAnswer === i ? 'selected' : ''}" onclick="selectOption(${i})">
           <span class="option-letter">${letters[i]}</span>
           ${opt}
         </button>
@@ -1001,7 +1001,7 @@ function selectOption(i) {
     } else {
       renderQuestion();
     }
-  }, 350);
+  }, 180);
 }
 
 function goBack() {
