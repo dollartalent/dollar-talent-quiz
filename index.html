@@ -293,6 +293,27 @@
     color: var(--black);
   }
 
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 24px;
+  }
+
+  .back-btn:hover {
+    border-color: rgba(255,255,255,0.2);
+    color: var(--text);
+  }
+
   .next-btn {
     margin-top: 28px;
     display: inline-flex;
@@ -665,6 +686,27 @@
     text-decoration: underline;
   }
 
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 24px;
+  }
+
+  .back-btn:hover {
+    border-color: rgba(255,255,255,0.2);
+    color: var(--text);
+  }
+
   @media (max-width: 480px) {
     .quiz-header { margin-bottom: 28px; }
     .cta-section { padding: 28px 20px; }
@@ -747,7 +789,7 @@
     <div class="cta-eyebrow">Your next step</div>
     <div class="cta-title">You already have what it takes.<br>Now learn the system.</div>
     <div class="cta-body">Your English is good enough. Your skills are real. The only thing standing between you and a USD salary is knowing exactly how the system works — and that's what this course teaches you.</div>
-    <a href="https://stan.store/dollartalent" class="cta-btn">
+    <a href="YOUR_STAN_STORE_LINK_HERE" class="cta-btn">
       Start earning in dollars
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
         <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -923,23 +965,25 @@ function renderQuestion() {
   card.style.animation = 'none';
   card.offsetHeight;
   card.style.animation = '';
+  const savedAnswer = answers[q.key];
   card.innerHTML = `
+    ${current > 0 ? `
+    <button class="back-btn" onclick="goBack()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M13 8H3M7 4l-4 4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Previous question
+    </button>` : ''}
     <div class="q-number">Question ${current + 1} of ${questions.length}</div>
     <div class="q-text">${q.q}</div>
     <div class="options">
       ${q.options.map((opt, i) => `
-        <button class="option-btn" onclick="selectOption(${i})">
+        <button class="option-btn ${savedAnswer === i ? 'selected' : ''}" onclick="selectOption(${i})">
           <span class="option-letter">${letters[i]}</span>
           ${opt}
         </button>
       `).join('')}
     </div>
-    <button class="next-btn" id="next-btn" onclick="nextQuestion()">
-      ${current < questions.length - 1 ? 'Next question' : 'See my results'}
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
   `;
   updateProgress();
 }
@@ -950,7 +994,21 @@ function selectOption(i) {
   document.querySelectorAll('.option-btn').forEach((b, idx) => {
     b.classList.toggle('selected', idx === i);
   });
-  document.getElementById('next-btn').classList.add('visible');
+  setTimeout(() => {
+    current++;
+    if (current >= questions.length) {
+      showLoading();
+    } else {
+      renderQuestion();
+    }
+  }, 350);
+}
+
+function goBack() {
+  if (current > 0) {
+    current--;
+    renderQuestion();
+  }
 }
 
 function nextQuestion() {
