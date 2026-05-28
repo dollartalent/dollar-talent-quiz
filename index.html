@@ -974,7 +974,7 @@ function renderQuestion(restoreAnswer) {
   html += '<div class="q-text">' + q.q + '</div>';
   html += '<div class="options">';
   for (var i = 0; i < q.options.length; i++) {
-    var sel = (savedAnswer === i) ? ' selected' : '';
+    var sel = (restoreAnswer && savedAnswer === i) ? ' selected' : '';
     html += '<button class="option-btn' + sel + '" onclick="selectOption(' + i + ')"><span class="option-letter">' + letters[i] + '</span>' + q.options[i] + '</button>';
   }
   html += '</div>';
@@ -997,7 +997,7 @@ function selectOption(i) {
     } else {
       renderQuestion(false);
     }
-  }, 250);
+  }, 400);
 }
 
 function goBack() {
