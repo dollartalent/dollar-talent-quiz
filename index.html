@@ -789,7 +789,7 @@
     <div class="cta-eyebrow">Your next step</div>
     <div class="cta-title">You already have what it takes.<br>Now learn the system.</div>
     <div class="cta-body">Your English is good enough. Your skills are real. The only thing standing between you and a USD salary is knowing exactly how the system works — and that's what this course teaches you.</div>
-    <a href="https://stan.store/dollartalent" class="cta-btn">
+    <a href="https://verastori.gumroad.com/l/mlwdtf" class="cta-btn">
       Start earning in dollars
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
         <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -955,17 +955,17 @@ function getProfile(a) {
 
 function startQuiz() {
   showPage('page-quiz');
-  renderQuestion();
+  renderQuestion(false);
 }
 
-function renderQuestion() {
+function renderQuestion(restoreAnswer) {
   const q = questions[current];
   const letters = ['A','B','C','D'];
   const card = document.getElementById('question-card');
   card.style.animation = 'none';
   card.offsetHeight;
   card.style.animation = '';
-  const savedAnswer = (answers[q.key] !== undefined) ? answers[q.key] : -1;
+  const savedAnswer = (restoreAnswer && answers[q.key] !== undefined) ? answers[q.key] : -1;
   let html = '';
   if (current > 0) {
     html += '<button class="back-btn" onclick="goBack()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4l-4 4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Previous question</button>';
@@ -995,7 +995,7 @@ function selectOption(i) {
     if (current >= questions.length) {
       showLoading();
     } else {
-      renderQuestion();
+      renderQuestion(false);
     }
   }, 250);
 }
@@ -1003,7 +1003,7 @@ function selectOption(i) {
 function goBack() {
   if (current > 0) {
     current--;
-    renderQuestion();
+    renderQuestion(true);
   }
 }
 
