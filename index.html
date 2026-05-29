@@ -965,7 +965,7 @@ function renderQuestion(restoreAnswer) {
   card.style.animation = 'none';
   card.offsetHeight;
   card.style.animation = '';
-  const savedAnswer = (restoreAnswer === true && answers[q.key] !== undefined) ? answers[q.key] : -1;
+  const savedAnswer = -1;
   let html = '';
   if (current > 0) {
     html += '<button class="back-btn" onclick="goBack()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4l-4 4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Previous question</button>';
@@ -974,7 +974,7 @@ function renderQuestion(restoreAnswer) {
   html += '<div class="q-text">' + q.q + '</div>';
   html += '<div class="options">';
   for (var i = 0; i < q.options.length; i++) {
-    var sel = (restoreAnswer && savedAnswer === i) ? ' selected' : '';
+    var sel = (restoreAnswer === true && answers[questions[current].key] === i) ? ' selected' : '';
     html += '<button class="option-btn' + sel + '" onclick="selectOption(' + i + ')"><span class="option-letter">' + letters[i] + '</span>' + q.options[i] + '</button>';
   }
   html += '</div>';
